@@ -1,0 +1,402 @@
+logistic_normal_1d:
+  estimate_intercept: false
+  rx: normal
+  ry: logistic
+logistic_rademacher_1d:
+  estimate_intercept: false
+  rx: rademacher
+  ry: logistic
+logistic_sbinom_m1_p10_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.1
+  ry: logistic
+logistic_sbinom_m1_p20_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.2
+  ry: logistic
+logistic_sbinom_m1_p30_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.30000000000000004
+  ry: logistic
+logistic_sbinom_m1_p40_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.4
+  ry: logistic
+logistic_sbinom_m1_p50_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.5
+  ry: logistic
+logistic_sbinom_m1_p60_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.6
+  ry: logistic
+logistic_sbinom_m1_p70_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.7000000000000001
+  ry: logistic
+logistic_sbinom_m1_p80_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.8
+  ry: logistic
+logistic_sbinom_m1_p90_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.9
+  ry: logistic
+logistic_sbinom_m2_p10_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.1
+  ry: logistic
+logistic_sbinom_m2_p20_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.2
+  ry: logistic
+logistic_sbinom_m2_p30_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.30000000000000004
+  ry: logistic
+logistic_sbinom_m2_p40_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.4
+  ry: logistic
+logistic_sbinom_m2_p50_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.5
+  ry: logistic
+logistic_sbinom_m2_p60_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.6
+  ry: logistic
+logistic_sbinom_m2_p70_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.7000000000000001
+  ry: logistic
+logistic_sbinom_m2_p80_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.8
+  ry: logistic
+logistic_sbinom_m2_p90_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.9
+  ry: logistic
+poisson_normal_1d:
+  estimate_intercept: false
+  rx: normal
+  ry: poisson
+poisson_rademacher_1d:
+  estimate_intercept: false
+  rx: rademacher
+  ry: poisson
+poisson_sbinom_m1_p10_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.1
+  ry: poisson
+poisson_sbinom_m1_p20_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.2
+  ry: poisson
+poisson_sbinom_m1_p30_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.30000000000000004
+  ry: poisson
+poisson_sbinom_m1_p40_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.4
+  ry: poisson
+poisson_sbinom_m1_p50_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.5
+  ry: poisson
+poisson_sbinom_m1_p60_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.6
+  ry: poisson
+poisson_sbinom_m1_p70_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.7000000000000001
+  ry: poisson
+poisson_sbinom_m1_p80_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.8
+  ry: poisson
+poisson_sbinom_m1_p90_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.9
+  ry: poisson
+poisson_sbinom_m2_p10_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.1
+  ry: poisson
+poisson_sbinom_m2_p20_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.2
+  ry: poisson
+poisson_sbinom_m2_p30_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.30000000000000004
+  ry: poisson
+poisson_sbinom_m2_p40_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.4
+  ry: poisson
+poisson_sbinom_m2_p50_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.5
+  ry: poisson
+poisson_sbinom_m2_p60_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.6
+  ry: poisson
+poisson_sbinom_m2_p70_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.7000000000000001
+  ry: poisson
+poisson_sbinom_m2_p80_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.8
+  ry: poisson
+poisson_sbinom_m2_p90_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.9
+  ry: poisson
+probit_normal_1d:
+  estimate_intercept: false
+  rx: normal
+  ry: probit
+probit_rademacher_1d:
+  estimate_intercept: false
+  rx: rademacher
+  ry: probit
+probit_sbinom_m1_p10_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.1
+  ry: probit
+probit_sbinom_m1_p20_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.2
+  ry: probit
+probit_sbinom_m1_p30_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.30000000000000004
+  ry: probit
+probit_sbinom_m1_p40_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.4
+  ry: probit
+probit_sbinom_m1_p50_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.5
+  ry: probit
+probit_sbinom_m1_p60_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.6
+  ry: probit
+probit_sbinom_m1_p70_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.7000000000000001
+  ry: probit
+probit_sbinom_m1_p80_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.8
+  ry: probit
+probit_sbinom_m1_p90_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 1
+    p: 0.9
+  ry: probit
+probit_sbinom_m2_p10_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.1
+  ry: probit
+probit_sbinom_m2_p20_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.2
+  ry: probit
+probit_sbinom_m2_p30_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.30000000000000004
+  ry: probit
+probit_sbinom_m2_p40_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.4
+  ry: probit
+probit_sbinom_m2_p50_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.5
+  ry: probit
+probit_sbinom_m2_p60_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.6
+  ry: probit
+probit_sbinom_m2_p70_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.7000000000000001
+  ry: probit
+probit_sbinom_m2_p80_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.8
+  ry: probit
+probit_sbinom_m2_p90_1d:
+  estimate_intercept: false
+  rx: standardized_binomial
+  rx_kwargs:
+    m: 2
+    p: 0.9
+  ry: probit
