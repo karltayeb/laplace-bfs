@@ -1,11 +1,5 @@
 import stdpopsim
 import numpy as np
-import jax.numpy as jnp
-import jax
-from glmbf import glmbf, logistic, poisson
-import matplotlib.pyplot as plt
-import seaborn as sns
-from glmbf import binary_x_regression
 
 
 def simulate_haplotypes(
