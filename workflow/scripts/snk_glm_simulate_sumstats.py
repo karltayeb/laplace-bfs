@@ -6,6 +6,10 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 import pickle
+import tqdm
+
+import os
+import tempfile
 
 # vectorized functions for computing BFs
 compute_log_abf_vmap = jax.jit(
@@ -65,7 +69,7 @@ def simulate_data(spec, haplotypes, glm):
     return dict(X=X, y=y)
 
 
-def compute_summary_statistics(X, y, prior_variance, glm):
+def compute_summary_statistics(X, y, glm):
     # prepare data
     Xi = add_ones_vmap(X)
     data = summarize_data_vmap(
@@ -120,12 +124,17 @@ def compute_log_bfs(summary_statistics, prior_variance):
 
 
 compute_ss_vmap = jax.jit(
-    jax.vmap(compute_summary_statistics, (None, 0, None, None)), static_argnums=[3]
+    jax.vmap(compute_summary_statistics, (None, 0, None)), static_argnums=[2]
 )
 
-if __name__ == "__main__":
-    print(snakemake.rule)
+compute_ss_jit = jax.jit(compute_summary_statistics, static_argnames=["glm"])
 
+
+def tree_stack(trees):
+    return jax.tree.map(lambda *v: jnp.stack(v), *trees)
+
+
+if __name__ == "__main__":
     # load haplotypes
     spec = snakemake.params[0]
     haplotypes = haplotypes = np.load(snakemake.input.haplotypes)
@@ -135,9 +144,16 @@ if __name__ == "__main__":
     glm = glms.get(spec.get("model"))
 
     print("Sampling genotypes...")
+    print(spec)
     data = simulate_data(spec, haplotypes, glm)
+
     print("Computing summary statistics...")
-    ss = compute_ss_vmap(data["X"], data["y"], 1.0, glm)
-    ss = jax.tree.map(np.array, ss)
+    # ss = compute_ss_vmap(data["X"], data["y"], 1.0, glm)
+    ss = [
+        jax.tree.map(np.array, compute_ss_jit(data["X"], y, glm))
+        for y in tqdm.tqdm(data["y"])
+    ]
+    ss = tree_stack(ss)
+    # ss = jax.tree.map(np.array, ss)
 
     pickle.dump(ss, open(snakemake.output.ss, "wb"))
