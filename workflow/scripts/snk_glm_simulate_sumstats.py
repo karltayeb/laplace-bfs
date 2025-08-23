@@ -46,6 +46,17 @@ def add_ones(x):
 add_ones_vmap = jax.vmap(add_ones, 1)
 
 
+def replace_y(summarized_data, new_y, glm):
+    X_unique, indices = summarized_data.get("X_unique"), summarized_data.get("indices")
+    Ty = jnp.zeros(X_unique.shape[0])
+    Ty = Ty.at[indices].add(glm.suffstat(new_y))
+    summarized_data["Ty"] = Ty
+    return summarized_data
+
+
+replace_y_vmap = jax.jit(jax.vmap(replace_y, (0, None, None)), static_argnums=[2])
+
+
 def sample_n_individuals(n, haplotypes, ploidy=2):
     K, p = haplotypes.shape
     genotypes = np.zeros((n, p))
@@ -69,12 +80,9 @@ def simulate_data(spec, haplotypes, glm):
     return dict(X=X, y=y)
 
 
-def compute_summary_statistics(X, y, glm):
-    # prepare data
-    Xi = add_ones_vmap(X)
-    data = summarize_data_vmap(
-        Xi, y, 3, glm
-    )  # size=3, there are 3 possible genotypes for diploid
+def compute_summary_statistics(data, y, glm):
+    # update summarized data with new y
+    data = replace_y_vmap(data, y, glm)
 
     # compute MLE
     bhat0 = jnp.array([glm.link(y.mean()), 0.0])  # same null fit for all
@@ -82,10 +90,8 @@ def compute_summary_statistics(X, y, glm):
     converged = check_converged_vmap(optstates, 1e-3)
 
     # compute ll0
-    data1 = dxr.summarize_data(
-        Xi[0], y, 3, glm
-    )  # for evaluating ll0 using summarized data. could be any point
-    ll0 = dxr.log_likelihood(bhat0, data1, glm)
+    data0 = jax.tree.map(lambda x: x[0], data)
+    ll0 = dxr.log_likelihood(bhat0, data0, glm)
 
     # compute bayes factors, summary statistics
     llr = compute_ll_vmap(Bhat, data, glm) - ll0
@@ -147,12 +153,15 @@ if __name__ == "__main__":
     print(spec)
     data = simulate_data(spec, haplotypes, glm)
 
+    Xi = add_ones_vmap(data["X"])
+    Y = data["y"]
+    data = summarize_data_vmap(
+        Xi, Y[0], 3, glm
+    )  # size=3, there are 3 possible genotypes for diploid
+
     print("Computing summary statistics...")
     # ss = compute_ss_vmap(data["X"], data["y"], 1.0, glm)
-    ss = [
-        jax.tree.map(np.array, compute_ss_jit(data["X"], y, glm))
-        for y in tqdm.tqdm(data["y"])
-    ]
+    ss = [jax.tree.map(np.array, compute_ss_jit(data, y, glm)) for y in tqdm.tqdm(Y)]
     ss = tree_stack(ss)
     # ss = jax.tree.map(np.array, ss)
 
