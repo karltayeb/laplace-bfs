@@ -54,3 +54,12 @@ rule simulate_glm_summary_statistics2:
 
 rule run_simulations:
     input: expand("output/single_variable_selection/{simid}/summary_stats.pkl", simid = list(simulation_specs.keys()))
+
+
+import os 
+SIMULATION_DIR = 'output/single_variable_selection/'
+SIM_IDS = [s for s in os.listdir(f'{SIMULATION_DIR}') if s.startswith('0x')]
+rule aggregate_sumstats:
+    params: sim_ids = SIM_IDS
+    output: 'output/single_variable_selection/processed_summary_stats.pkl'
+    script: '../scripts/aggregate_summary_statistics.py'
