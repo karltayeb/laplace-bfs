@@ -7,9 +7,7 @@ import jax.numpy as jnp
 import numpy as np
 import pickle
 import tqdm
-
-import os
-import tempfile
+from functools import partial
 
 # vectorized functions for computing BFs
 compute_log_abf_vmap = jax.jit(
@@ -46,23 +44,45 @@ def add_ones(x):
 add_ones_vmap = jax.vmap(add_ones, 1)
 
 
-def replace_y(summarized_data, new_y, glm):
-    X_unique, indices = summarized_data.get("X_unique"), summarized_data.get("indices")
-    Ty = jnp.zeros(X_unique.shape[0])
-    Ty = Ty.at[indices].add(glm.suffstat(new_y))
+def sample_n_individuals(n, haplotypes, ploidy=2):
+    k, p = haplotypes.shape
+    genotypes = np.zeros((n, p), dtype=np.uint8)
+    for _ in range(ploidy):
+        genotypes += haplotypes[np.random.choice(k, n, replace=True)]
+    return genotypes
+
+
+@partial(jax.jit, static_argnums=[2])
+def grouped_sum(x, y, size):
+    sums = jnp.zeros(size)
+    sums = sums.at[x].add(y)
+    return sums
+
+
+def grouped_sums(X, y, size):
+    return jnp.array([grouped_sum(x, y, size) for x in X])
+
+
+def summarize_y(indices, y, size, glm):
+    n = grouped_sums(indices, np.ones_like(y), size)
+    Ty = grouped_sums(indices, glm.suffstat(y), size)
+    return n, Ty
+
+
+def update_y(summarized_data, new_y, glm):
+    indices = summarized_data["indices"]
+    Ty = grouped_sums(indices, glm.suffstat(new_y), 3)
     summarized_data["Ty"] = Ty
     return summarized_data
 
 
-replace_y_vmap = jax.jit(jax.vmap(replace_y, (0, None, None)), static_argnums=[2])
-
-
-def sample_n_individuals(n, haplotypes, ploidy=2):
-    K, p = haplotypes.shape
-    genotypes = np.zeros((n, p))
-    for _ in range(ploidy):
-        genotypes = genotypes + haplotypes[np.random.choice(K, n, replace=True)]
-    return genotypes
+def summarize_data2(X, y, glm):
+    n, p = X.shape
+    X_unique = jnp.array([[1, 0], [1, 1], [1, 2]]).astype(float)
+    X_unique = np.array([X_unique for _ in range(X.shape[1])])
+    indices = X.T.astype(int)
+    n, Ty = summarize_y(indices, y, 3, glm)
+    return dict(n=n, Ty=Ty, X_unique=X_unique, indices=indices)
 
 
 def simulate_data(spec, haplotypes, glm):
@@ -82,7 +102,7 @@ def simulate_data(spec, haplotypes, glm):
 
 def compute_summary_statistics(data, y, glm):
     # update summarized data with new y
-    data = replace_y_vmap(data, y, glm)
+    data = update_y(data, y, glm)
 
     # compute MLE
     bhat0 = jnp.array([glm.link(y.mean()), 0.0])  # same null fit for all
@@ -153,15 +173,21 @@ if __name__ == "__main__":
     print(spec)
     data = simulate_data(spec, haplotypes, glm)
 
-    Xi = add_ones_vmap(data["X"])
+    print("Summarizing data")
+
+    # Xi = add_ones_vmap(data["X"])
+    # data = summarize_data_vmap(
+    #     Xi, Y[0], 3, glm
+    # )  # size=3, there are 3 possible genotypes for diploid
+
     Y = data["y"]
-    data = summarize_data_vmap(
-        Xi, Y[0], 3, glm
-    )  # size=3, there are 3 possible genotypes for diploid
+    summarized_data = summarize_data2(data["X"], Y[0], glm)
 
     print("Computing summary statistics...")
-    # ss = compute_ss_vmap(data["X"], data["y"], 1.0, glm)
-    ss = [jax.tree.map(np.array, compute_ss_jit(data, y, glm)) for y in tqdm.tqdm(Y)]
+    ss = [
+        jax.tree.map(np.array, compute_summary_statistics(summarized_data, y, glm))
+        for y in tqdm.tqdm(Y)
+    ]
     ss = tree_stack(ss)
     # ss = jax.tree.map(np.array, ss)
 
