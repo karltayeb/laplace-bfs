@@ -34,8 +34,23 @@ rule simulate_glm_summary_statistics:
         lambda w: simulation_specs[w.simid]
     output:
         ss = 'output/simulations/{simid}/summary_stats.pkl'
+    resources:
+        mem_mb = 64000,
+        time = "8:0:0"
     script: '../scripts/snk_glm_simulate_sumstats.py'
 
 
+rule simulate_glm_summary_statistics2:
+    input: 
+        haplotypes = lambda w: simulation_specs[w.simid]['haplotypes_path']
+    params:
+        lambda w: simulation_specs[w.simid]
+    output:
+        ss = 'output/single_variable_selection/{simid}/summary_stats.pkl'
+    resources:
+        mem_mb = 64000,
+        time = "8:0:0"
+    script: '../scripts/snk_glm_sumstats.py'
+
 rule run_simulations:
-    input: expand("output/simulations/{simid}/summary_stats.pkl", simid = list(simulation_specs.keys()))
+    input: expand("output/single_variable_selection/{simid}/summary_stats.pkl", simid = list(simulation_specs.keys()))
