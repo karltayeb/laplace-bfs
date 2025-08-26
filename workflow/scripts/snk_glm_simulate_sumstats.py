@@ -24,7 +24,7 @@ summarize_data_vmap = jax.jit(
     jax.vmap(dxr.summarize_data, (0, None, None, None)), static_argnums=[2, 3]
 )
 compute_mle_vmap = jax.jit(
-    jax.vmap(dxr.mle, (None, 0, None, None)), static_argnums=[2, 3]
+    jax.vmap(dxr.mle, (None, 0, None, None, None)), static_argnums=[3, 4]
 )
 compute_ll_vmap = jax.jit(
     jax.vmap(dxr.log_likelihood, (0, 0, None)), static_argnums=[2]
@@ -86,7 +86,7 @@ def compute_summary_statistics(data, y, glm):
 
     # compute MLE
     bhat0 = jnp.array([glm.link(y.mean()), 0.0])  # same null fit for all
-    Bhat, optstates = compute_mle_vmap(bhat0, data, glm, -1)  # fit MLE
+    Bhat, optstates = compute_mle_vmap(bhat0, data, 0.01, glm, -1)  # fit MLE
     converged = check_converged_vmap(optstates, 1e-3)
 
     # compute ll0
