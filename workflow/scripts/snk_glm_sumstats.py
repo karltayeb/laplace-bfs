@@ -8,6 +8,7 @@ from glmbf.dx_multiple_y import compute_summary_stats_multiple_y
 from glmbf import glmbf
 import pickle
 from tqdm import tqdm
+from util import dmap
 
 
 def sample_n_individuals(n, haplotypes, ploidy=2):
@@ -55,10 +56,9 @@ if __name__ == "__main__":
 
     print("Computing summary statistics...")
     ss = [
-        jax.tree.map(
-            np.array, compute_summary_stats_multiple_y(x, Y, 3, penalty=0.001, glm=glm)
-        )
+        compute_summary_stats_multiple_y(x, Y, 3, penalty=0.001, glm=glm)
         for x in tqdm(X.T)
     ]
     ss = tree_stack(ss)
+    ss = dmap(lambda x: np.array(x), ss)
     pickle.dump(ss, open(snakemake.output.ss, "wb"))
